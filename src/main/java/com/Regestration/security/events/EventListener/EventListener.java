@@ -20,7 +20,7 @@ public class EventListener implements ApplicationListener<RegistrationEvent> {
         User user = event.getUser();
         String token = UUID.randomUUID().toString();
         userService.saveVerificationToken(token,user);
-        String url = event.getApplicationUrl()+"verification token?token= "+token;
+        String url = event.getApplicationUrl()+"/verifyToken?token= "+token;
         log.info("click the link to verify your account:{}",url);
 
     }
