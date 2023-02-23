@@ -26,6 +26,8 @@ public interface UserService {
  Optional<User> findUserByToken(String token);
 
  void changePassword(User user, String newPassword);
+
+ boolean checkIfOldPassword(User user, String oldPassword);
 }
 
 

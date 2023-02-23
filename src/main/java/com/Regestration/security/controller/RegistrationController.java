@@ -25,7 +25,7 @@ public class RegistrationController {
     @Autowired
     private ApplicationEventPublisher publisher;
     @PostMapping("/resetPassword")
-    public String resetPassword(@RequestBody PasswordModel passwordModel, HttpServletRequest request){
+    public String resetPassword(@RequestBody PasswordModel passwordModel, final HttpServletRequest request){
       User user = userService.findUserByEmail(passwordModel.getEmail());
       String url="";
       if(user!=null){
@@ -34,6 +34,17 @@ public class RegistrationController {
           url=passwordResetTokenMail(user,applicationUrl(request),token);
       }
       return url;
+
+    }
+    @PostMapping("/changePassword")
+    public String changePassword(@RequestBody PasswordModel passwordModel){
+        User user=userService.findUserByEmail(passwordModel.getEmail());
+        if(!userService.checkIfOldPassword(user,passwordModel.getOldPassword())){
+            return "Invalid old password";
+        }
+        //save new password and return new password saved successfully
+        userService.changePassword(user,passwordModel.getNewPassword());
+        return "password changed successfully";
 
     }
     @PostMapping("/savePassword")
